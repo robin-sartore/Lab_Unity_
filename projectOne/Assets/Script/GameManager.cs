@@ -1,14 +1,19 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject atomPrefab;
+    
+
+
+    public GameObject catPrefab;
     [SerializeField]
-    Vector3 initPosAtom;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Instantiate(atomPrefab, initPosAtom, Quaternion.identity);
+        int x =Random.Range(-440, -395);
+        int z = Random.Range(370, 420);
+        Instantiate(catPrefab, new Vector3(x, 66.061f, z), Quaternion.identity);
 
     }
 
