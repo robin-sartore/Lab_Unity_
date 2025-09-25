@@ -1,21 +1,29 @@
-using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections; 
 
-public class PlayerController : MonoBehaviour
+
+public class Player : MonoBehaviour
 {
-    private CharacterController characterController;
+     private CharacterController characterController;
 
     [SerializeField] private float speed = 5f;
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private AudioSource coinEffect;
+    [SerializeField] private GameManager gameManager;
 
-    private Vector3 velocity;
+    [Header("Vite UI")]
+    [SerializeField] private GameObject vita1;
+    [SerializeField] private GameObject vita2;
+    [SerializeField] private GameObject vita3;
 
-    // Porta
     private bool apri = false;
     private bool chiudi = false;
     private bool portaTimerAttivo = false;
 
+    private Vector3 velocity;
+
+    // Porta
     private Transform portaTransform;
     private Vector3 portaPosizioneIniziale;
     private Vector3 portaPosizioneAperta;
@@ -34,11 +42,35 @@ public class PlayerController : MonoBehaviour
             portaPosizioneIniziale = portaTransform.position;
             portaPosizioneAperta = portaPosizioneIniziale + portaTransform.right * distanzaApertura;
         }
+
+        // Imposta visibilità delle vite in base al valore salvato
+        switch (gameManager.vite)
+        {
+            case 3:
+                vita1.SetActive(true);
+                vita2.SetActive(true);
+                vita3.SetActive(true);
+                break;
+            case 2:
+                vita1.SetActive(false);
+                vita2.SetActive(true);
+                vita3.SetActive(true);
+                break;
+            case 1:
+                vita1.SetActive(false);
+                vita2.SetActive(false);
+                vita3.SetActive(true);
+                break;
+            case 0:
+                vita1.SetActive(false);
+                vita2.SetActive(false);
+                vita3.SetActive(false);
+                break;
+        }
     }
 
     private void Update()
     {
-        // Movimento player
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
@@ -80,8 +112,15 @@ public class PlayerController : MonoBehaviour
 
         if (hit.gameObject.name.Equals("Cat"))
         {
-            Debug.Log("Hai perso una vita!");
-            GameManager.instance.LoseLife();
+            gameManager.vite--;
+
+            Debug.Log("Hai perso una vita. Vite rimaste: " + gameManager.vite);
+
+            if (gameManager.vite == 2 && vita1 != null) vita1.SetActive(false);
+            if (gameManager.vite == 1 && vita2 != null) vita2.SetActive(false);
+            if (gameManager.vite <= 0 && vita3 != null) vita3.SetActive(false);
+
+            StartCoroutine(RicaricaDopoPerdita());
         }
 
         if (hit.gameObject.name.Equals("Porta"))
@@ -90,7 +129,9 @@ public class PlayerController : MonoBehaviour
             chiudi = false;
 
             if (!portaTimerAttivo)
+            {
                 StartCoroutine(RichiudiPortaDopoTempo());
+            }
         }
 
         if (hit.gameObject.name.Equals("Pavimento"))
@@ -106,11 +147,13 @@ public class PlayerController : MonoBehaviour
         coin.GetComponent<MeshRenderer>().material.color = Color.red;
 
         if (coinEffect != null)
+        {
             coinEffect.Play();
+        }
 
         yield return new WaitForSeconds(1);
         Destroy(coin);
-        GameManager.instance.UpdateScore();
+        gameManager.UpdateScore();
     }
 
     private IEnumerator RichiudiPortaDopoTempo()
@@ -120,5 +163,20 @@ public class PlayerController : MonoBehaviour
         apri = false;
         chiudi = true;
         portaTimerAttivo = false;
+    }
+
+    private IEnumerator RicaricaDopoPerdita()
+    {
+        yield return new WaitForSeconds(0.3f);
+
+        if (gameManager.vite <= 0)
+        {
+            gameManager.ResetGame();
+            SceneManager.LoadScene("Menu");
+        }
+        else
+        {
+            SceneManager.LoadScene("SampleScene");
+        }
     }
 }

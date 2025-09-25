@@ -1,34 +1,47 @@
-using JetBrains.Annotations;
-using TMPro;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    
+    public int vite = 3;
+    public int score = 0;
 
-
-    public GameObject catPrefab;
-    [SerializeField]
-    public int score;
     public TextMeshProUGUI scoreText;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        int x =Random.Range(-440, -395);
-        int z = Random.Range(370, 420);
-        Instantiate(catPrefab, new Vector3(x, 66.061f, z), Quaternion.identity);
 
+    private void Awake()
+    {
+        // Impedisci che venga distrutto quando si cambia scena
+        DontDestroyOnLoad(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        Debug.Log(score);
+        UpdateScoreUI();
     }
+
+    private void Update()
+    {
+        // Debug solo per controllo
+        Debug.Log("Score: " + score);
+        Debug.Log("Vite: " + vite);
+    }
+
     public void UpdateScore()
     {
         score++;
-        scoreText.text = score.ToString();
+        UpdateScoreUI();
+    }
 
+    private void UpdateScoreUI()
+    {
+        if (scoreText != null)
+            scoreText.text = score.ToString();
+    }
+
+    public void ResetGame()
+    {
+        vite = 3;
+        score = 0;
+        UpdateScoreUI();
     }
 }
