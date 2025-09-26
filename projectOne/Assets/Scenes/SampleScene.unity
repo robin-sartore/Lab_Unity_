@@ -3451,25 +3451,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &731879091
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 731879086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90a2c87ccc030a14ab37e590d3a8c01f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
-  gravity: -9.8
-  coinEffect: {fileID: 1171231296}
-  gameManager: {fileID: 797560137}
-  vita1: {fileID: 573095976}
-  vita2: {fileID: 1160136929}
-  vita3: {fileID: 1028743702}
 --- !u!143 &731879092
 CharacterController:
   m_ObjectHideFlags: 0
@@ -4379,9 +4360,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4431f673ec45e2e499324ffc891c0cb4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 731879092}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4431f673ec45e2e499324ffc891c0cb4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 731879091}
   m_SourcePrefab: {fileID: 100100000, guid: 4431f673ec45e2e499324ffc891c0cb4, type: 3}
 --- !u!1 &943760634
 GameObject:

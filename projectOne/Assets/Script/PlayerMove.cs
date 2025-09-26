@@ -1,11 +1,11 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections; 
 
 
-public class Player : MonoBehaviour
+public class PlayerMove : MonoBehaviour 
 {
-     private CharacterController characterController;
+    private CharacterController characterController;
 
     [SerializeField] private float speed = 5f;
     [SerializeField] private float gravity = -9.81f;
@@ -43,7 +43,6 @@ public class Player : MonoBehaviour
             portaPosizioneAperta = portaPosizioneIniziale + portaTransform.right * distanzaApertura;
         }
 
-        // Imposta visibilità delle vite in base al valore salvato
         switch (gameManager.vite)
         {
             case 3:
